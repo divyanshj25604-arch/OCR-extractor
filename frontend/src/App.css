@@ -1,0 +1,90 @@
+@import './CSS/variables.css';
+
+/**
+ * App Component Styles
+ * Main layout and structural styles
+ */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
+.app__main {
+  flex: 1;
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .app__main {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  }
+}
+
+.app__container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* Extract Button */
+.app__extract-button,
+.app__reset-button {
+  padding: var(--spacing-md) var(--spacing-2xl);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: white;
+  background-color: var(--primary-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-fast);
+  align-self: center;
+  min-width: 200px;
+}
+
+.app__extract-button:hover:not(:disabled),
+.app__reset-button:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.app__extract-button:active:not(:disabled),
+.app__reset-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.app__extract-button:disabled,
+.app__reset-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.app__reset-button {
+  background-color: var(--secondary-color);
+}
+
+.app__reset-button:hover:not(:disabled) {
+  background-color: #db2777;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app__main {
+    padding: var(--spacing-md);
+  }
+
+  .app__container {
+    gap: var(--spacing-lg);
+  }
+
+  .app__extract-button,
+  .app__reset-button {
+    width: 100%;
+  }
+}
