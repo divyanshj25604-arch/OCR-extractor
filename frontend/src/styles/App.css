@@ -1,0 +1,89 @@
+/* Global reset (basic sanity) */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+/* Main container */
+.container {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Title */
+.title {
+  margin-bottom: 20px;
+}
+
+/* Upload section */
+.upload-box {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-box input {
+  margin-right: 10px;
+  width: 250px;
+
+}
+
+.upload-box button {
+  padding: 6px 12px;
+  cursor: pointer;
+  border: none;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 5px;
+}
+
+.upload-box button:disabled {
+  background-color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Row layout */
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Preview box */
+.preview-box {
+  width: 300px;
+  background-color: #1e293b;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.preview-box img {
+  width: 100%;
+  border-radius: 6px;
+}
+
+/* Output box */
+.output-box {
+  width: 300px;
+  background-color: #1e293b;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.output-box h4 {
+  margin-top: 0;
+}
+
+.output-box pre {
+  white-space: pre-wrap;
+  background-color: #020617;
+  padding: 10px;
+  border-radius: 6px;
+  min-height: 120px;
+}
