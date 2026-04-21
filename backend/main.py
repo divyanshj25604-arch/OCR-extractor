@@ -35,4 +35,3 @@ async def extract_text(file: UploadFile = File(...)):
         return {"error": str(e)}
 
 
-
