@@ -1,62 +1,66 @@
-import { useState } from "react";
-import FileUpload from "./components/FileUpload";
-import Preview from "./components/Preview";
-import OutputBox from "./components/OutputBox";
-import { extractText } from "./services/api";
-import "./styles/App.css";
+import React from 'react'
+import { useState, useEffect } from 'react'
 
-function App() {
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleFileSelect = (e) => {
-    const f = e.target.files[0];
-    setFile(f);
-    setPreview(URL.createObjectURL(f));
-  };
-
-  const handleUpload = async () => {
-    if (!file) return;
-
-    setLoading(true);
-    setText("");
-
-    try {
-      const data = await extractText(file);
-
-      if (!data.extracted_text?.trim()) {
-        setText("No readable text detected");
-      } else {
-        setText(data.extracted_text);
-      }
-    } catch (err) {
-      console.error(err);
-      setText("Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+const App = () => {
+  const [image, setImage] = useState(null)
+  const [preview, setPreview] = useState(null)
+  const [text, setText] = useState('')
+  const [loading, setLoading] = useState(false)
 
   return (
-    <div className="container">
-      <h2 className="title">OCR App</h2>
+    <div>
+      <header>
+        <h1>Extracto</h1>
+      </header>
+      <div className="action-bar">
+        <div className="upload-section">
+          <input
+            type='file'
+            accept='image/*'
+            onChange={(e) => {
+              const file = e.target.files[0]
+              // console.log(file)
+              setImage(file)
+              setPreview(URL.createObjectURL(file))
+            }}
+          />
 
-      <div className="upload-box">
-        <FileUpload
-          onFileSelect={handleFileSelect}
-          onUpload={handleUpload}
-          loading={loading}
-        />
+
+        </div>
+
+        <button onClick={async () => {
+          if (!image) {
+            alert('Please select an image first')
+            return
+          }
+          setLoading(true)
+          const formData = new FormData()
+          formData.append('file', image)
+          let response = await fetch("http://127.0.0.1:8000/extract", {
+            method: "POST",
+            body: formData
+          })
+
+          const data = await response.json()
+          setText(data.extracted_text)
+          setLoading(false)
+        }}>
+          {loading ? 'Processing...' : 'Extract Text'}
+        </button>
       </div>
-
-      <div className="row">
-        <Preview preview={preview} />
-        <OutputBox text={text} />
+      <div className="left">
+        <div className="preview">
+          {preview && <img src={preview} alt='preview' className='preview' />}
+        </div>
+      </div>
+      <div className="right">
+        <div className="extracted-text">
+          <h2>Extracted Text:</h2>
+          <pre>{text}</pre>
+        </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
