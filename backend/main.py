@@ -32,4 +32,7 @@ async def extract_text(file: UploadFile = File(...)):
     except Exception as e:
         return {"error": str(e)}
 
-
+@app.get("/debug")
+def debug():
+    import pytesseract
+    return {"version": str(pytesseract.get_tesseract_version())}
