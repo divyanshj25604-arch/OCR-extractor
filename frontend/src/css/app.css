@@ -1,0 +1,116 @@
+.head{
+    background-color: #f5f5f5;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    padding: 20px;
+    margin: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+.upload-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 50%;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+}
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: #333 2px 2px 2px 0px;
+}
+.panel {
+    display: flex;
+    gap: 20px;
+    width: 95%;
+    margin: 20px;
+    height: 66vh;
+    overflow-y: auto;
+}
+.preview {
+    width: 50%;
+    height: 100%;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+}
+.preview-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.extracted-text {
+    flex: 1;
+    object-fit: contain;
+    overflow-y: scroll;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.extracted-text pre {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 15px;
+}
+.text-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+.copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border: #000000 solid 1px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.copy-btn:hover {
+    background-color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: #333 2px 2px 2px 0px;
+}
+.copy-icon {
+    width: 16px;
+    height: 16px;
+}
+.export {
+    padding: 10px 15px;
+    background-color: #ffffff;
+    color: #000000;
+    border: #000000 solid 1px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+.export:hover {
+    background-color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: #333 2px 2px 2px 0px;
+}
