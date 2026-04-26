@@ -95,7 +95,7 @@ const App = () => {
       <div className="panel">
         <div className="preview">
           {preview && (
-            <img src={preview} alt="preview" className="preview-image" />
+            <img src={preview} alt="preview" className="preview-img" />
           )}
         </div>
 
