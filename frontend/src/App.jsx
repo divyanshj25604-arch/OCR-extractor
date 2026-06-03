@@ -1,128 +1,54 @@
-import React, { useState } from "react"
 import "./css/app.css"
-import copyIcon from "./assets/copy-document.png"
-import jsPDF from "jspdf"
+import ActionBar from "./components/ActionBar"
+import PreviewPanel from "./components/PreviewPanel"
+import Sidebar from "./components/Sidebar"
+import TextPanel from "./components/Textpanel"
+import { useOCRWorkspace } from "./hooks/useOCRWorkspace"
 
 const App = () => {
-  const [image, setImage] = useState(null)
-  const [preview, setPreview] = useState(null)
-  const [text, setText] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    } catch (e) {
-      console.error("Copy failed", e)
-    }
-  }
-
-  const handleExport = () => {
-    const doc = new jsPDF()
-    const pageWidth = doc.internal.pageSize.getWidth()
-    const margin = 10
-
-    const lines = doc.splitTextToSize(text, pageWidth - margin * 2)
-
-    doc.text(lines, margin, 10)
-    doc.save("extracted-text.pdf")
-  }
-
-  const handleExtract = async () => {
-    if (!image) {
-      alert("Please select an image first")
-      return
-    }
-
-    try {
-      setLoading(true)
-
-      const formData = new FormData()
-      formData.append("file", image)
-
-      const response = await fetch(
-        'http://127.0.0.1:8000/extract',
-        {
-          method: "POST",
-          body: formData
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-
-      const data = await response.json()
-      console.log("API:", data)
-
-      if (data.extracted_text) {
-        setText(data.extracted_text)
-      } else {
-        setText("Error: " + (data.error || "Unknown error"))
-      }
-
-    } catch (err) {
-      console.error(err)
-      setText("Something went wrong")
-    } finally {
-      setLoading(false)
-    }
-  }
+  const workspace = useOCRWorkspace()
 
   return (
-    <div>
-      <header className="head">
-        <h1>Extracto</h1>
-      </header>
+    <div className="app-shell">
+      <Sidebar
+        fileName={workspace.image?.name}
+        hasText={workspace.hasText}
+        wordCount={workspace.wordCount}
+        onExtract={workspace.runExtraction}
+        onClear={workspace.clearWorkspace}
+        loading={workspace.loading}
+        hasImage={workspace.hasImage}
+      />
 
-      <div className="action-bar">
-        <div className="upload-section">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0]
-              setImage(file)
-              setPreview(URL.createObjectURL(file))
-            }}
+      <main className="workspace">
+        <header className="head">
+          <div>
+            <h1>Extracto</h1>
+            <p>Upload an image, extract text, and export the result.</p>
+          </div>
+        </header>
+
+        <ActionBar
+          fileName={workspace.image?.name}
+          preview={workspace.preview}
+          loading={workspace.loading}
+          hasImage={workspace.hasImage}
+          onFileChange={workspace.selectFile}
+          onExtract={workspace.runExtraction}
+          onClear={workspace.clearWorkspace}
+        />
+
+        <div className="panel">
+          <PreviewPanel preview={workspace.preview} />
+          <TextPanel
+            text={workspace.text}
+            error={workspace.error}
+            copied={workspace.copied}
+            onCopy={workspace.copyText}
+            onExport={workspace.exportText}
           />
         </div>
-
-        <button onClick={handleExtract}>
-          {loading ? "Processing..." : "Extract Text"}
-        </button>
-      </div>
-
-      <div className="panel">
-        <div className="preview">
-          {preview && (
-            <img src={preview} alt="preview" className="preview-img" />
-          )}
-        </div>
-
-        <div className="extracted-text">
-          <h2>Extracted Text:</h2>
-          <pre>{text}</pre>
-
-          <div className="text-actions">
-            <button
-              className="copy-btn"
-              onClick={handleCopy}
-              disabled={!text}
-            >
-              <img src={copyIcon} alt="copy" className="copy-icon" />
-              {copied ? "Copied!" : "Copy"}
-            </button>
-
-            <button className="export" onClick={handleExport}>
-              Export
-            </button>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   )
 }
