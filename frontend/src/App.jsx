@@ -44,12 +44,16 @@ const App = () => {
       formData.append("file", image)
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/extract`,
+        'http://127.0.0.1:8000/extract',
         {
           method: "POST",
           body: formData
         }
       )
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
 
       const data = await response.json()
       console.log("API:", data)
